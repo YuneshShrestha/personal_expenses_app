@@ -21,6 +21,7 @@ class _NewTransactionState extends State<NewTransaction> {
     }
     widget.addTransaction(descriptionText, amountText);
     FocusManager.instance.primaryFocus?.unfocus();
+    Navigator.of(context).pop();
   }
 
   @override
