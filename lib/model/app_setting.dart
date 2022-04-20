@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 
 class MySetting {
-  static Color primary = Colors.purple;
+  static MaterialColor primary = Colors.purple;
   static Color primarytextColor = Colors.black;
   static Color secondaryTextColor = Colors.grey;
 }
