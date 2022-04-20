@@ -1,20 +1,27 @@
 import 'package:flutter/material.dart';
 
-class NewTransaction extends StatelessWidget {
-  final descriptionController = TextEditingController();
-  final amountController = TextEditingController();
+class NewTransaction extends StatefulWidget {
   final Function addTransaction;
+  NewTransaction(this.addTransaction, {Key? key}) : super(key: key);
+
+  @override
+  State<NewTransaction> createState() => _NewTransactionState();
+}
+
+class _NewTransactionState extends State<NewTransaction> {
+  final descriptionController = TextEditingController();
+
+  final amountController = TextEditingController();
+
   void _callAddTransaction() {
     String descriptionText = descriptionController.text;
     double amountText = double.parse(amountController.text);
     if (descriptionText.isEmpty || amountText <= 0) {
       return;
     }
-    addTransaction(descriptionText, amountText);
+    widget.addTransaction(descriptionText, amountText);
     FocusManager.instance.primaryFocus?.unfocus();
   }
-
-  NewTransaction(this.addTransaction, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
