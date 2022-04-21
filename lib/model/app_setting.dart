@@ -5,5 +5,6 @@ class MySetting {
   static MaterialColor primary = Colors.purple;
   static Color primarytextColor = Colors.black;
   static Color secondaryTextColor = Colors.grey;
+  static Color accentColor = Colors.yellow;
 }
 // Color 

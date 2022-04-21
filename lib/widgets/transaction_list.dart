@@ -26,7 +26,7 @@ class TransactionList extends StatelessWidget {
                     child: Text(
                       'Rs. ${transactionList[index].expenses.toStringAsFixed(2)}',
                       style: TextStyle(
-                          color: MySetting.primary,
+                          color: Theme.of(context).primaryColor,
                           fontSize: 20.0,
                           fontWeight: FontWeight.w700),
                     ),
@@ -36,13 +36,8 @@ class TransactionList extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(
-                      transactionList[index].title,
-                      style: TextStyle(
-                          color: MySetting.primarytextColor,
-                          fontWeight: FontWeight.w500,
-                          fontSize: 18.0),
-                    ),
+                    Text(transactionList[index].title,
+                        style: Theme.of(context).textTheme.headline6),
                     const SizedBox(
                       height: 2.0,
                     ),
