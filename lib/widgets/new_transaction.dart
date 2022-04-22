@@ -1,27 +1,43 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class NewTransaction extends StatefulWidget {
   final Function addTransaction;
-  NewTransaction(this.addTransaction, {Key? key}) : super(key: key);
+  const NewTransaction(this.addTransaction, {Key? key}) : super(key: key);
 
   @override
   State<NewTransaction> createState() => _NewTransactionState();
 }
 
 class _NewTransactionState extends State<NewTransaction> {
-  final descriptionController = TextEditingController();
-
-  final amountController = TextEditingController();
-
+  final _descriptionController = TextEditingController();
+  final _amountController = TextEditingController();
+  DateTime? _dateTime;
   void _callAddTransaction() {
-    String descriptionText = descriptionController.text;
-    double amountText = double.parse(amountController.text);
-    if (descriptionText.isEmpty || amountText <= 0) {
+    if (_descriptionController.text.isEmpty && _amountController.text.isEmpty) {
       return;
     }
-    widget.addTransaction(descriptionText, amountText);
+    String descriptionText = _descriptionController.text;
+    double amountText = double.parse(_amountController.text);
+    if (descriptionText.isEmpty || amountText <= 0 || _dateTime == null) {
+      return;
+    }
+    widget.addTransaction(descriptionText, amountText, _dateTime);
     FocusManager.instance.primaryFocus?.unfocus();
     Navigator.of(context).pop();
+  }
+
+  void _addDate() {
+    showDatePicker(
+            context: context,
+            initialDate: DateTime.now(),
+            lastDate: DateTime.now(),
+            firstDate: DateTime(2022))
+        .then((value) {
+      setState(() {
+        _dateTime = value;
+      });
+    });
   }
 
   @override
@@ -33,7 +49,7 @@ class _NewTransactionState extends State<NewTransaction> {
         child: Column(crossAxisAlignment: CrossAxisAlignment.end, children: [
           TextField(
             decoration: const InputDecoration(hintText: 'Description'),
-            controller: descriptionController,
+            controller: _descriptionController,
             // _ means we get an argument but don't care about it
             onSubmitted: (_) => _callAddTransaction(),
           ),
@@ -41,9 +57,26 @@ class _NewTransactionState extends State<NewTransaction> {
             decoration: const InputDecoration(hintText: 'Amount'),
             onSubmitted: (_) => _callAddTransaction(),
             keyboardType: TextInputType.number,
-            controller: amountController,
+            controller: _amountController,
           ),
-          TextButton(
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              _dateTime == null
+                  ? const Text('No Date Added')
+                  : Text(
+                      'Added Date: ${DateFormat.yMMMd().format(_dateTime!).toString()}'),
+              TextButton(
+                  onPressed: () {
+                    _addDate();
+                  },
+                  child: const Text(
+                    'Add Date',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ))
+            ],
+          ),
+          ElevatedButton(
             onPressed: _callAddTransaction,
             child: const Text('Save'),
           ),

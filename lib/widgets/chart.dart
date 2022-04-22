@@ -38,7 +38,8 @@ class Chart extends StatelessWidget {
         children: dayWiseTransaction.map((e) {
           return Flexible(
               fit: FlexFit.tight,
-              child: ChartBar(e['day'], e['amt'], e['amt'] / totalSpending));
+              child: ChartBar(e['day'], e['amt'],
+                  totalSpending == 0.0 ? 0 : e['amt'] / totalSpending));
         }).toList(),
       ),
     );

@@ -58,12 +58,12 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   final List<Transaction> _transactionList = [];
 
-  void _addTransaction(String title, double expenses) {
+  void _addTransaction(String title, double expenses, DateTime date) {
     var newTransaction = Transaction(
         id: DateTime.now().toString(),
         title: title,
         expenses: expenses,
-        date: DateTime.now());
+        date: date);
     setState(() {
       _transactionList.add(newTransaction);
     });
@@ -76,7 +76,13 @@ class _HomeState extends State<Home> {
           return NewTransaction(_addTransaction);
         });
   }
-
+  void _delete(id) {
+    setState(() {
+      _transactionList.removeWhere((element) {
+        return element.id == id;
+      });
+    });
+  }
   List<Transaction> get getNewTransaction {
     return _transactionList.where((element) {
       return element.date
@@ -113,7 +119,7 @@ class _HomeState extends State<Home> {
             )
           : Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
               Chart(getNewTransaction),
-              TransactionList(_transactionList),
+              TransactionList(_transactionList,_delete),
             ]),
       floatingActionButton: FloatingActionButton(
         onPressed: () => _openAddExpensesBottomSheet(context),

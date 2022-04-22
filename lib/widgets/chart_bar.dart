@@ -14,15 +14,18 @@ class ChartBar extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 2.0),
       child: Column(
         children: [
-          FittedBox(
-            child: Text('Rs.$spendingAmount'),
+          SizedBox(
+            height: 20.0,
+            child: FittedBox(
+              child: Text('Rs.$spendingAmount'),
+            ),
           ),
           const SizedBox(
             height: 10.0,
           ),
           SizedBox(
             width: 15.0,
-            height: 60.0,
+            height: 75.0,
             child: Stack(
               children: [
                 Container(
