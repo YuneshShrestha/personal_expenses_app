@@ -17,6 +17,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final textScaleFactor = MediaQuery.textScaleFactorOf(context);
     return MaterialApp(
       home: const Home(),
       debugShowCheckedModeBanner: false,
@@ -27,9 +28,9 @@ class MyApp extends StatelessWidget {
           headline6: ThemeData.light()
               .textTheme
               .copyWith(
-                  headline6: const TextStyle(
+                  headline6: TextStyle(
                       fontFamily: 'OpenSans',
-                      fontSize: 18.0,
+                      fontSize: textScaleFactor * 18,
                       fontWeight: FontWeight.bold))
               .headline6,
         ),
@@ -37,9 +38,9 @@ class MyApp extends StatelessWidget {
           titleTextStyle: ThemeData.light()
               .textTheme
               .copyWith(
-                  headline6: const TextStyle(
+                  headline6: TextStyle(
                       fontFamily: 'OpenSans',
-                      fontSize: 20.0,
+                      fontSize: textScaleFactor * 20,
                       fontWeight: FontWeight.bold))
               .headline6,
         ),
@@ -76,6 +77,7 @@ class _HomeState extends State<Home> {
           return NewTransaction(_addTransaction);
         });
   }
+
   void _delete(id) {
     setState(() {
       _transactionList.removeWhere((element) {
@@ -83,6 +85,7 @@ class _HomeState extends State<Home> {
       });
     });
   }
+
   List<Transaction> get getNewTransaction {
     return _transactionList.where((element) {
       return element.date
@@ -92,17 +95,18 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
+    final _appBar = AppBar(
+      title: const Text("Daily Expenses"),
+      actions: [
+        IconButton(
+            onPressed: () => _openAddExpensesBottomSheet(context),
+            icon: const Icon(Icons.add))
+      ],
+      // backgroundColor: MySetting.primary,
+    );
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      appBar: AppBar(
-        title: const Text("Daily Expenses"),
-        actions: [
-          IconButton(
-              onPressed: () => _openAddExpensesBottomSheet(context),
-              icon: const Icon(Icons.add))
-        ],
-        // backgroundColor: MySetting.primary,
-      ),
+      appBar: _appBar,
       body: _transactionList.isEmpty
           ? Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -117,9 +121,17 @@ class _HomeState extends State<Home> {
                 Image.asset('assets/images/no_data.png')
               ],
             )
-          : Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-              Chart(getNewTransaction),
-              TransactionList(_transactionList,_delete),
+          : ListView(children: [
+              SizedBox(
+                  height: (MediaQuery.of(context).size.height * 0.3) -
+                      (_appBar.preferredSize.height) -
+                      (MediaQuery.of(context).padding.top),
+                  child: Chart(getNewTransaction)),
+              SizedBox(
+                  height: (MediaQuery.of(context).size.height * 0.7) -
+                      (_appBar.preferredSize.height) -
+                      (MediaQuery.of(context).padding.top),
+                  child: TransactionList(_transactionList, _delete)),
             ]),
       floatingActionButton: FloatingActionButton(
         onPressed: () => _openAddExpensesBottomSheet(context),

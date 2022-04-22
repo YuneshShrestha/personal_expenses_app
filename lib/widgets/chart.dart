@@ -23,16 +23,20 @@ class Chart extends StatelessWidget {
   }
 
   double get totalSpending {
-    return dayWiseTransaction.fold(0.0, (sum, element) {
-      return sum + element['amt'];
-    });
+    double sum = 0.0;
+    for (int i = 0; i < dayWiseTransaction.length; i++) {
+      sum = sum + dayWiseTransaction[i]['amt'];
+    }
+    return sum;
+    // return dayWiseTransaction.fold(0.0, (sum, element) {
+    //   return sum + element['amt'];
+    // });
   }
-  // Map<String, Object> get value => null;
 
   @override
   Widget build(BuildContext context) {
     return Card(
-      elevation: 5.0,
+      // elevation: 5.0,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: dayWiseTransaction.map((e) {
