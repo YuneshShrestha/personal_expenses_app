@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:personal_expenses/model/transaction.dart';
 import 'package:personal_expenses/widgets/chart.dart';
@@ -9,6 +10,9 @@ import 'model/app_setting.dart';
 // import 'package:intl/intl_browser.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations(
+      [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
   runApp(const MyApp());
 }
 
