@@ -31,7 +31,7 @@ class TransactionList extends StatelessWidget {
                       textAlign: TextAlign.left,
                       style: TextStyle(
                           color: Theme.of(context).primaryColor,
-      // fontsize
+                          // fontsize
                           fontWeight: FontWeight.w700),
                     ),
                   ),
@@ -52,8 +52,7 @@ class TransactionList extends StatelessWidget {
                         height: 2.0,
                       ),
                       Text(
-                        DateFormat.yMMMd()
-                            .format(transactionList[index].date),
+                        DateFormat.yMMMd().format(transactionList[index].date),
                         style: TextStyle(
                             color: MySetting.secondaryTextColor,
                             fontWeight: FontWeight.w600),
@@ -65,17 +64,27 @@ class TransactionList extends StatelessWidget {
               Flexible(
                 flex: 1,
                 fit: FlexFit.tight,
-                child: SizedBox(
-                  width: 10.0,
-                  child: IconButton(
-                      onPressed: () {
-                        delete(transactionList[index].id);
-                      },
-                      icon: Icon(
-                        Icons.delete,
-                        color: Theme.of(context).errorColor,
-                      )),
-                ),
+                child: MediaQuery.of(context).size.width > 460
+                    ? TextButton.icon(
+                        onPressed: () {
+                          delete(transactionList[index].id);
+                        },
+                        icon: Icon(
+                          Icons.delete,
+                          color: Theme.of(context).errorColor,
+                        ),
+                        label: const Text('Delete'))
+                    : SizedBox(
+                        width: 10.0,
+                        child: IconButton(
+                            onPressed: () {
+                              delete(transactionList[index].id);
+                            },
+                            icon: Icon(
+                              Icons.delete,
+                              color: Theme.of(context).errorColor,
+                            )),
+                      ),
               ),
             ],
           ),

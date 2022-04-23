@@ -109,17 +109,18 @@ class _HomeState extends State<Home> {
       ],
       // backgroundColor: MySetting.primary,
     );
-    bool _isLandscape =
-        MediaQuery.of(context).orientation == Orientation.landscape;
+    final mediaQuery = MediaQuery.of(context);
+
+    bool _isLandscape = mediaQuery.orientation == Orientation.landscape;
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: _appBar,
       body: _transactionList.isEmpty
           ? SizedBox(
-              height: MediaQuery.of(context).size.height -
-                  MediaQuery.of(context).padding.top -
+              height: mediaQuery.size.height -
+                  mediaQuery.padding.top -
                   _appBar.preferredSize.height,
-              width: MediaQuery.of(context).size.width,
+              width: mediaQuery.size.width,
               child: LayoutBuilder(
                 builder: (BuildContext context, BoxConstraints constraints) {
                   return Column(
@@ -161,27 +162,27 @@ class _HomeState extends State<Home> {
                 ),
               if (!_isLandscape)
                 SizedBox(
-                    height: (MediaQuery.of(context).size.height * 0.3) -
+                    height: (mediaQuery.size.height * 0.3) -
                         (_appBar.preferredSize.height) -
-                        (MediaQuery.of(context).padding.top),
+                        (mediaQuery.padding.top),
                     child: Chart(getNewTransaction)),
               if (!_isLandscape)
                 SizedBox(
-                    height: (MediaQuery.of(context).size.height * 0.7) -
+                    height: (mediaQuery.size.height * 0.7) -
                         (_appBar.preferredSize.height) -
-                        (MediaQuery.of(context).padding.top),
+                        (mediaQuery.padding.top),
                     child: TransactionList(_transactionList, _delete)),
               if (_isLandscape)
                 _chartEnable
                     ? SizedBox(
-                        height: (MediaQuery.of(context).size.height * 0.7) -
+                        height: (mediaQuery.size.height * 0.7) -
                             (_appBar.preferredSize.height) -
-                            (MediaQuery.of(context).padding.top),
+                            (mediaQuery.padding.top),
                         child: Chart(getNewTransaction))
                     : SizedBox(
-                        height: (MediaQuery.of(context).size.height * 0.7) -
+                        height: (mediaQuery.size.height * 0.7) -
                             (_appBar.preferredSize.height) -
-                            (MediaQuery.of(context).padding.top),
+                            (mediaQuery.padding.top),
                         child: TransactionList(_transactionList, _delete)),
             ]),
       floatingActionButton: FloatingActionButton(
