@@ -45,42 +45,49 @@ class _NewTransactionState extends State<NewTransaction> {
     return Card(
       elevation: 2.0,
       child: Padding(
-        padding: const EdgeInsets.all(10.0),
-        child: Column(crossAxisAlignment: CrossAxisAlignment.end, children: [
-          TextField(
-            decoration: const InputDecoration(hintText: 'Description'),
-            controller: _descriptionController,
-            // _ means we get an argument but don't care about it
-            onSubmitted: (_) => _callAddTransaction(),
-          ),
-          TextField(
-            decoration: const InputDecoration(hintText: 'Amount'),
-            onSubmitted: (_) => _callAddTransaction(),
-            keyboardType: TextInputType.number,
-            controller: _amountController,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              _dateTime == null
-                  ? const Text('No Date Added')
-                  : Text(
-                      'Added Date: ${DateFormat.yMMMd().format(_dateTime!).toString()}'),
-              TextButton(
-                  onPressed: () {
-                    _addDate();
-                  },
-                  child: const Text(
-                    'Add Date',
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ))
-            ],
-          ),
-          ElevatedButton(
-            onPressed: _callAddTransaction,
-            child: const Text('Save'),
-          ),
-        ]),
+        padding: EdgeInsets.only(
+          top: 10.0,
+          left: 10.0,
+          right: 10.0,
+          bottom: MediaQuery.of(context).viewInsets.bottom + 10,
+        ),
+        child: SingleChildScrollView(
+          child: Column(crossAxisAlignment: CrossAxisAlignment.end, children: [
+            TextField(
+              decoration: const InputDecoration(hintText: 'Description'),
+              controller: _descriptionController,
+              // _ means we get an argument but don't care about it
+              onSubmitted: (_) => _callAddTransaction(),
+            ),
+            TextField(
+              decoration: const InputDecoration(hintText: 'Amount'),
+              onSubmitted: (_) => _callAddTransaction(),
+              keyboardType: TextInputType.number,
+              controller: _amountController,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                _dateTime == null
+                    ? const Text('No Date Added')
+                    : Text(
+                        'Added Date: ${DateFormat.yMMMd().format(_dateTime!).toString()}'),
+                TextButton(
+                    onPressed: () {
+                      _addDate();
+                    },
+                    child: const Text(
+                      'Add Date',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ))
+              ],
+            ),
+            ElevatedButton(
+              onPressed: _callAddTransaction,
+              child: const Text('Save'),
+            ),
+          ]),
+        ),
       ),
     );
   }
