@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:intl/intl.dart';
 import 'package:personal_expenses/model/transaction.dart';
 import 'package:personal_expenses/widgets/chart.dart';
 import 'package:personal_expenses/widgets/new_transaction.dart';
@@ -98,6 +96,44 @@ class _HomeState extends State<Home> {
     }).toList();
   }
 
+  List<Widget> buildLandScapeMode(
+      MediaQueryData mediaQuery, AppBar _appBar, Widget transactionList) {
+    return [
+      Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const Text('Show Chart'),
+          Switch(
+              value: _chartEnable,
+              onChanged: (val) {
+                setState(() {
+                  _chartEnable = val;
+                });
+              }),
+        ],
+      ),
+      _chartEnable
+          ? SizedBox(
+              height: (mediaQuery.size.height * 0.7) -
+                  (_appBar.preferredSize.height) -
+                  (mediaQuery.padding.top),
+              child: Chart(getNewTransaction))
+          : transactionList
+    ];
+  }
+
+  List<Widget> buildPortraitMode(MediaQueryData mediaQuery, AppBar _appBar, Widget transactionList) {
+    return [
+       SizedBox(
+                    height: (mediaQuery.size.height * 0.3) -
+                        (_appBar.preferredSize.height) -
+                        (mediaQuery.padding.top),
+                    child: Chart(getNewTransaction)),
+       transactionList             
+
+    ];
+  }
+
   @override
   Widget build(BuildContext context) {
     final _appBar = AppBar(
@@ -110,6 +146,11 @@ class _HomeState extends State<Home> {
       // backgroundColor: MySetting.primary,
     );
     final mediaQuery = MediaQuery.of(context);
+    final transactionList = SizedBox(
+        height: (mediaQuery.size.height * 0.7) -
+            (_appBar.preferredSize.height) -
+            (mediaQuery.padding.top),
+        child: TransactionList(_transactionList, _delete));
 
     bool _isLandscape = mediaQuery.orientation == Orientation.landscape;
     return Scaffold(
@@ -147,43 +188,10 @@ class _HomeState extends State<Home> {
             )
           : ListView(children: [
               if (_isLandscape)
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Text('Show Chart'),
-                    Switch(
-                        value: _chartEnable,
-                        onChanged: (val) {
-                          setState(() {
-                            _chartEnable = val;
-                          });
-                        }),
-                  ],
-                ),
+                ...buildLandScapeMode(mediaQuery, _appBar, transactionList),
               if (!_isLandscape)
-                SizedBox(
-                    height: (mediaQuery.size.height * 0.3) -
-                        (_appBar.preferredSize.height) -
-                        (mediaQuery.padding.top),
-                    child: Chart(getNewTransaction)),
-              if (!_isLandscape)
-                SizedBox(
-                    height: (mediaQuery.size.height * 0.7) -
-                        (_appBar.preferredSize.height) -
-                        (mediaQuery.padding.top),
-                    child: TransactionList(_transactionList, _delete)),
-              if (_isLandscape)
-                _chartEnable
-                    ? SizedBox(
-                        height: (mediaQuery.size.height * 0.7) -
-                            (_appBar.preferredSize.height) -
-                            (mediaQuery.padding.top),
-                        child: Chart(getNewTransaction))
-                    : SizedBox(
-                        height: (mediaQuery.size.height * 0.7) -
-                            (_appBar.preferredSize.height) -
-                            (mediaQuery.padding.top),
-                        child: TransactionList(_transactionList, _delete)),
+               ...buildPortraitMode(mediaQuery,_appBar, transactionList),
+        
             ]),
       floatingActionButton: FloatingActionButton(
         onPressed: () => _openAddExpensesBottomSheet(context),
